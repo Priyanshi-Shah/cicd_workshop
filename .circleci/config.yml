@@ -19,6 +19,12 @@ jobs:
             ./ci/setup.sh
           name: Setup
 
+      - store_artifacts:
+            path: reports
+      - run:
+          command: |
+            ./ci/run_tests.sh
+          name: RunSetup
 workflows:
   build_test_deploy:
     jobs:
