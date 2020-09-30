@@ -22,6 +22,7 @@ jobs:
           command: |
             ./ci/run_tests.sh
           name: RunSetup
+
       - store_artifacts:
             path: reports
 
