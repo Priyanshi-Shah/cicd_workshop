@@ -10,15 +10,15 @@ jobs:
     executor: python_docker
     steps:
       - checkout:
-          - path: ~/project
+          path: ~/project
       - run:
           command: |
             ls -al
             sudo chown -R circleci:circleci .
             chmod -R +rwx ./ci
             ./ci/setup.sh
-            echo 'Hello world, Welcome'
           name: Setup
+
 workflows:
   build_test_deploy:
     jobs:
