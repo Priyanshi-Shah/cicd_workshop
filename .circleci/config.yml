@@ -18,13 +18,13 @@ jobs:
             chmod -R +rwx ./ci
             ./ci/setup.sh
           name: Setup
-
-      - store_artifacts:
-            path: reports
       - run:
           command: |
             ./ci/run_tests.sh
           name: RunSetup
+      - store_artifacts:
+            path: reports
+
 workflows:
   build_test_deploy:
     jobs:
