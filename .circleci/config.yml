@@ -1,37 +1,45 @@
 version: 2.1
 
 executors:
-  python_docker:
-    docker:
-      - image: circleci/python:3.7-node-browsers-legacy
+    python_docker:
+        docker:
+            - image: circleci/python:3.7-node-browsers-legacy
 
 jobs:
-  build:
-    executor: python_docker
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          command: |
-            ls -al
-            sudo chown -R circleci:circleci .
-            chmod -R +rwx ./ci
-            ./ci/setup.sh
-          name: Setup
-      - run:
-          command: |
-            ./ci/run_tests.sh
-          name: RunSetup
-      - run:
-          command: |
-            mkdir -p reports
-            echo '<p><b>this is a test report</b></p>' > reports/fake_test_report.html
-          name: Generate Artifacts
-      - store_artifacts:
-            path: reports
+    build:
+        executor: python_docker
+        steps:
+            - checkout:
+                path: ~/project
+            - run:
+                command: |
+                    ls -al
+                    sudo chown -R circleci:circleci .
+                    chmod -R +rwx ./ci
+                    ./ci/setup.sh
+                name: Setup
+            - run:
+                command: |
+                    echo 'Running tests'
+                    python -m unittest discover -s tests/ -p "test*.py" -v
+                name: Run Tests
+            - run:
+                command: |
+                    mkdir -p reports
+                    echo '<p><b>this is a test report</b></p>' > reports/fake_test_report.html
+                name: Generate Artifacts
+            - store_artifacts:
+                path: reports
+            - run:
+                command: tar -cvf package.tar .
+                name: Create Package
+            - persist_to_workspace:
+                root: ~/project
+                path:
+                    - ./*.tar
 
 workflows:
   build_test_deploy:
     jobs:
-      - build:
-          name: build
+        - build:
+            name: build
