@@ -14,7 +14,7 @@ jobs:
       - run:
           command: |
             ls -al
-            sudo chown -R circleci:circleci
+            sudo chown -R circleci:circleci .
             chmod -R +rwx ./ci
             ./ci/setup.sh
             echo 'Hello world, Welcome'
